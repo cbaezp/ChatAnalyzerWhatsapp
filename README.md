@@ -60,31 +60,6 @@ To analyze your WhatsApp chat, follow these steps to export it:
 2. Select the desired analysis parameters (date range, participants, grouping by day/week/month).
 3. View the generated charts and insights based on the chat data.
 
-## Project Structure
-
-   chat-analyzer/
-   │
-   ├── app/
-   │   ├── analysis/
-   │   │   ├── __init__.py
-   │   │   ├── chat_analyzer.py
-   │   │   └── visualizer.py
-   │   ├── tests/
-   │   │   ├── __init__.py
-   │   │   └── test_chat_analyzer.py
-   │   └── utils/
-   │       ├── __init__.py
-   │       └── file_parser.py
-   ├── assets/
-   ├── requirements.txt
-   ├── setup.py
-   └── streamlit_app.py
-
-- **`app/analysis`**: Contains the core logic for analyzing the chat data.
-- **`app/utils`**: Utility functions for parsing and filtering the chat data.
-- **`streamlit_app.py`**: Main application script to run the Streamlit app.
-- **`requirements.txt`**: List of Python dependencies.
-- **`setup.py`**: Setup script for the project.
 
 ## Contributing
 
