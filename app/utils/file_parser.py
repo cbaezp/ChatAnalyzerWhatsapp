@@ -2,7 +2,6 @@ import re
 import pandas as pd
 from datetime import datetime
 
-
 def parse_whatsapp_chat(file):
     pattern = r'(\[.*?\]) (.*?): (.*)'
     lines = file.read().decode("utf-8").splitlines()
@@ -14,12 +13,27 @@ def parse_whatsapp_chat(file):
             timestamp = match.group(1).strip('[]')
             sender = match.group(2)
             message = match.group(3)
-            #Noticed that whatsapp uses the list below as placeholders for media.
+            # Check if the message is not a placeholder for media
             if message not in ["audio omitted", "image omitted", "video omitted"]:
-                try:
-                    date_time_obj = datetime.strptime(timestamp, '%m/%d/%y, %I:%M:%S %p')
-                except ValueError:
-                    date_time_obj = datetime.strptime(timestamp, '%d/%m/%y, %I:%M:%S %p')
+                # Normalize the timestamp by replacing "a.m." and "p.m." with "AM" and "PM"
+                timestamp = timestamp.replace(' a.m.', ' AM').replace(' p.m.', ' PM').replace('a.m.', ' AM').replace('p.m.', ' PM')
+                
+                # List of possible date formats to handle various cases
+                date_formats = [
+                    '%m/%d/%y, %I:%M:%S %p',
+                    '%d/%m/%y, %I:%M:%S %p'
+                ]
+                
+                for date_format in date_formats:
+                    try:
+                        date_time_obj = datetime.strptime(timestamp, date_format)
+                        break
+                    except ValueError:
+                        continue
+                else:
+                    # If no format matched, raise an error or handle it accordingly
+                    raise ValueError(f"Timestamp format not recognized: {timestamp}")
+                
                 data.append([date_time_obj, sender, message])
 
     df = pd.DataFrame(data, columns=['Timestamp', 'Sender', 'Message'])
