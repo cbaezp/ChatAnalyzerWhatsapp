@@ -15,13 +15,19 @@ def parse_whatsapp_chat(file):
             message = match.group(3)
             # Check if the message is not a placeholder for media
             if message not in ["audio omitted", "image omitted", "video omitted"]:
-                # Normalize the timestamp by replacing "a.m." and "p.m." with "AM" and "PM"
+           
                 timestamp = timestamp.replace(' a.m.', ' AM').replace(' p.m.', ' PM').replace('a.m.', ' AM').replace('p.m.', ' PM')
                 
                 # List of possible date formats to handle various cases
                 date_formats = [
-                    '%m/%d/%y, %I:%M:%S %p',
-                    '%d/%m/%y, %I:%M:%S %p'
+                    '%m/%d/%y, %I:%M:%S %p',  # 08/12/24, 8:57:27 PM
+                    '%d/%m/%y, %I:%M:%S %p',  # 12/08/24, 8:57:27 PM
+                    '%d/%m/%Y %H:%M:%S',      # 23/05/2024 21:44:49 (24-hour format)
+                    '%m/%d/%y, %I:%M:%S %p',  # 08/12/24, 08:57:27 AM
+                    '%d/%m/%y, %I:%M:%S %p',  # 12/08/24, 08:57:27 AM
+                    '%d/%m/%y, %H:%M:%S',     # 23/05/24, 21:44:49 (24-hour format)
+                    '%d/%m/%Y, %H:%M:%S',     # 23/05/2024, 21:44:49 (24-hour format with full year)
+                    '%m/%d/%Y, %I:%M:%S %p'   # 08/12/2024, 8:57:27 PM
                 ]
                 
                 for date_format in date_formats:
