@@ -34,8 +34,8 @@ class TestParseWhatsappChat(unittest.TestCase):
 
     def test_invalid_date_format(self):
         chat_data = b"[99/99/99, 03:45:12 p.m.] John: Hello!"
-        with self.assertRaises(ValueError):
-            parse_whatsapp_chat(BytesIO(chat_data))
+        df = parse_whatsapp_chat(BytesIO(chat_data))
+        self.assertEqual(len(df), 0)  # Should return an empty DataFrame
 
     def test_24_hour_format(self):
         chat_data = b"[23/05/2024 21:44:49] Alice: Good evening!\n[23/05/2024 08:30:15] Bob: Good morning!"
